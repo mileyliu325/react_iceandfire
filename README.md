@@ -10,10 +10,10 @@ Searchable is implemented by array 's filter function and inclues function, and 
 
 ## Libraries
 
-1.axios -> async
-2.react-awesome-modal -> simple popup modal
-3.styled-componets -> code css in js file
-4.boostrap -> style
+1. axios -> async
+2. react-awesome-modal -> simple popup modal
+3. styled-componets -> code css in js file
+4. boostrap -> style
 
 ## Todo
 
