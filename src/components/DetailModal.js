@@ -51,8 +51,8 @@ class DetailModal extends React.Component {
         )}
         <Modal
           visible={this.state.visible}
-          width="80%"
-          height="80%"
+          width="50%"
+          height="100%"
           effect="fadeInUp"
           onClickAway={() => this.closeModal()}
         >
