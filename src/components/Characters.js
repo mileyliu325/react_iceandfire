@@ -1,4 +1,5 @@
 import React from "react";
+import Searchable from "../components/Searchable";
 
 const Characters = ({ characters, loading }) => {
   if (loading) {
@@ -7,6 +8,8 @@ const Characters = ({ characters, loading }) => {
 
   return (
     <div className="center">
+      <Searchable elements={characters} />
+
       <table className="table table-bordered">
         <thead className="thead-dark">
           <tr>
