@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Jumbotron, Container } from 'react-bootstrap';
-import CharacterTable from '../components/CharacterTable'
+import Characters from "../components/Characters";
+import Pagination from "../components/Pagination";
 
 const CORS_FIX = "https://cors-anywhere.herokuapp.com/";
 const HOST = "https://anapioficeandfire.com/api/";
@@ -9,30 +9,29 @@ const DEV_HOST = CORS_FIX + HOST;
 const BOOK_NUM = 1;
 const MAX_FETCH_COUNT = 50;
 const PAGE_SIZE = 10;
+const ACTIVE = 1;
 
 class CharactersTablePage extends Component {
   constructor() {
     super();
-    this.state = { 
-      characterUrls: null, 
-      characters: [], 
-      isLoading: false,
-      dataList:[],
+    this.state = {
+      urls: [],
+      characters: [],
       currentPage: 1,
-      pageConfig: {
-        totalPage: MAX_FETCH_COUNT /PAGE_SIZE//总页码
-    }
+      charactersPerPage: 10,
+      isLoading: false
     };
   }
-  
+
   fetchBook = async () => {
-    console.log(`fetching book:${DEV_HOST}`);
+    this.setState({ isLoading: true });
     axios
       .get(`${DEV_HOST}books/${BOOK_NUM}`)
       .then(res => {
-        const characterUrls = res.data.characters;
-        this.setState({ characterUrls: characterUrls });
+        const characterUrls = res.data.characters.slice(0, MAX_FETCH_COUNT).sort();
+        this.setState({ urls: characterUrls });
         this.fetchCharaters();
+        this.setState({ isLoading: false });
       })
       .catch(err => {
         console.warn(err);
@@ -41,16 +40,18 @@ class CharactersTablePage extends Component {
 
   fetchCharaters = async () => {
     console.log("fetchCharaters:");
-    if (this.state.characterUrls) {
+    if (this.state.urls) {
       for (var i = 0; i < MAX_FETCH_COUNT; i++) {
-        const characterUrl = this.state.characterUrls[i];
+        const characterUrl = this.state.urls[i];
         axios
           .get(`${CORS_FIX}${characterUrl}`)
           .then(res => {
             const character = res.data;
             this.state.characters.push(character);
-            this.setState({ characters: this.state.characters, pageCount: Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE)});
-            // console.log(this.state.pageCount);
+            this.setState({
+              characters: this.state.characters,
+              pageCount: Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE)
+            });
           })
           .catch(err => {
             console.warn(err);
@@ -58,23 +59,48 @@ class CharactersTablePage extends Component {
       }
     }
   };
-  
+
   componentDidMount() {
     this.fetchBook();
   }
+
   render() {
-    const characters = this.state.characters;
-  
+    const fetchedCharacters = this.state.characters;
+    
+      // Get current character
+      const indexOfLastCharacter =
+        this.state.currentPage * this.state.charactersPerPage;
+
+      const indexOfFirstCharacter =
+        indexOfLastCharacter - this.state.charactersPerPage;
+
+    const currentCharacters = fetchedCharacters.slice(
+      indexOfFirstCharacter,
+      indexOfLastCharacter
+    );
+
+    // Change page
+    const paginate = pageNumber => this.setState({ currentPage: pageNumber });
+
     return (
-      <div>
-        <Jumbotron fluid>
-          <Container>
-            <h1>Ice and Fire Characters</h1>
-          </Container>
-        </Jumbotron>
-        <CharacterTable characters={characters}/>
+      <div className="container mt-5">
+        <h1 className="text-primary mb-3">Ice and fire</h1>
+
+        {fetchedCharacters.length == 50 && (
+          <Characters
+            characters={currentCharacters}
+            loading={this.state.isLoading}
+          />
+        )}
+
+        <Pagination
+          charactersPerPage={this.state.charactersPerPage}
+          totalCharacters={this.state.characters.length}
+          paginate={paginate}
+        />
       </div>
     );
   }
 }
+
 export default CharactersTablePage;
