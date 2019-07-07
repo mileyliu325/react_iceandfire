@@ -3,10 +3,11 @@ import axios from "axios";
 
 import Characters from "../components/Characters";
 import Pagination from "../components/Pagination";
-import Searchable from '../components/Searchable';
+import Searchable from "../components/Searchable";
 
-
+//delete it if no CORS issue
 const CORS_FIX = "https://cors-anywhere.herokuapp.com/";
+
 const HOST = "https://anapioficeandfire.com/api/";
 const DEV_HOST = CORS_FIX + HOST;
 const BOOK_NUM = 1;
@@ -18,8 +19,8 @@ class CharactersTablePage extends Component {
   constructor() {
     super();
     this.state = {
-      urls: [],
-      characters: [],
+      urls: [],//array of characters' api urls
+      characters: [],//arrary of character objects
       currentPage: ACTIVE,
       charactersPerPage: PAGE_SIZE,
       isLoading: false
@@ -36,7 +37,6 @@ class CharactersTablePage extends Component {
           .sort();
         this.setState({ urls: characterUrls });
         this.fetchCharaters();
-        this.setState({ isLoading: false });
       })
       .catch(err => {
         console.warn(err);
@@ -44,7 +44,6 @@ class CharactersTablePage extends Component {
   };
 
   fetchCharaters = async () => {
-    console.log("fetchCharaters:");
     if (this.state.urls) {
       for (var i = 0; i < MAX_FETCH_COUNT; i++) {
         const characterUrl = this.state.urls[i];
@@ -54,8 +53,7 @@ class CharactersTablePage extends Component {
             const character = res.data;
             this.state.characters.push(character);
             this.setState({
-              characters: this.state.characters,
-              pageCount: Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE)
+              characters: this.state.characters
             });
           })
           .catch(err => {
@@ -63,19 +61,14 @@ class CharactersTablePage extends Component {
           });
       }
     }
+    this.setState({ isLoading: false });
   };
   
   componentDidMount() {
     this.fetchBook();
   }
-  handleChange = event => {
-    const { value } = event.target;
-    this.setState({ value });
-  };
-
   render() {
     const fetchedCharacters = this.state.characters;
-    
 
     // Get current character
     const indexOfLastCharacter =
@@ -98,12 +91,12 @@ class CharactersTablePage extends Component {
         <h1 className="text-center">Ice and fire characters</h1>
         <br />
         <Searchable elements={this.state.characters} />
-        {fetchedCharacters.length == 50 && (
+        {fetchedCharacters.length == MAX_FETCH_COUNT && (
           <div>
-          <Characters
-            characters={currentCharacters}
-            loading={this.state.isLoading}
-          />
+            <Characters
+              characters={currentCharacters}
+              loading={this.state.isLoading}
+            />
           </div>
         )}
         <Pagination

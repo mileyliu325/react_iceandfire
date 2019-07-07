@@ -1,5 +1,5 @@
 import React from "react";
-import Searchable from "../components/Searchable";
+import DetailModal from "./DetailModal";
 
 const Characters = ({ characters, loading }) => {
   if (loading) {
@@ -28,9 +28,7 @@ const Characters = ({ characters, loading }) => {
               <td>{character.died}</td>
               <td>{character.culture}</td>
               <td>
-                <button type="button" class="btn btn-info">
-                  More
-                </button>
+                <DetailModal character={character} />
               </td>
             </tr>
           ))}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import DetailModal from "./DetailModal";
 class Searchable extends Component {
   constructor(props) {
     super();
@@ -9,6 +9,7 @@ class Searchable extends Component {
       viewableEls: props.elements
     };
   }
+
   componentWillReceiveProps(nextProps) {
     const { elements } = this.props;
     const { filterStr } = this.state;
@@ -19,7 +20,9 @@ class Searchable extends Component {
       });
     }
   }
+
   getViewableEls(elements, filterStr) {
+    //todo: ignore case sensative
     return elements.filter(el => JSON.stringify(el).includes(filterStr));
   }
   handleFilterChange = e => {
@@ -30,11 +33,12 @@ class Searchable extends Component {
       viewableEls: this.getViewableEls(elements, e.target.value)
     });
   };
+  //todo to detail page
   toDetail = e => {};
 
   render() {
     const { viewableEls } = this.state;
-    console.log(`viewableEls${this.state.viewableEls.length}`);
+
     return (
       <Container className="input-group mb-3">
         <InputContainer>
@@ -54,9 +58,10 @@ class Searchable extends Component {
             <ul className="list-group mb-4">
               {viewableEls.map(e => (
                 <li key={e} className="list-group-item">
-                  <a onClick={this.toDetail} href="#">
-                    {e.name}
-                  </a>
+                  <DetailModal
+                    character={e}
+                    shown_name={`${e.name} ( ${e.gender} )`}
+                  />
                 </li>
               ))}
             </ul>
