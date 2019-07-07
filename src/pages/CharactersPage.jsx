@@ -83,9 +83,12 @@ class CharactersTablePage extends Component {
     const paginate = pageNumber => this.setState({ currentPage: pageNumber });
 
     return (
-      <div className="container mt-5">
-        <h1 className="text-primary mb-3">Ice and fire</h1>
-
+      <div>
+      
+        <br/>
+        <h1 className="text-center">Ice and fire characters</h1>
+        <br/>
+      
         {fetchedCharacters.length == 50 && (
           <Characters
             characters={currentCharacters}
@@ -98,6 +101,7 @@ class CharactersTablePage extends Component {
           totalCharacters={this.state.characters.length}
           paginate={paginate}
         />
+      
       </div>
     );
   }

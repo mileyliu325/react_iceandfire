@@ -6,28 +6,36 @@ const Characters = ({ characters, loading }) => {
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Gender</th>
-          <th>Born</th>
-          <th>Culture</th>
-        </tr>
-      </thead>
-      <tbody>
-        {characters.map((character, index) => (
-          <tr key={character.url}>
-            <td>{index}</td>
-            <td>{character.name}</td>
-            <td>{character.gender}</td>
-            <td>{character.born}</td>
-            <td>{character.culture}</td>
+    <div className="center">
+      <table className="table table-bordered">
+        <thead className="thead-dark">
+          <tr>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Born</th>
+            <th>Died</th>
+            <th>Culture</th>
+            <th>More</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {characters.map((character, index) => (
+            <tr key={character.url}>
+              <td>{character.name}</td>
+              <td>{character.gender}</td>
+              <td>{character.born}</td>
+              <td>{character.died}</td>
+              <td>{character.culture}</td>
+              <td>
+                <button type="button" class="btn btn-info">
+                  More
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
