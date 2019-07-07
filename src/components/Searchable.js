@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 
 class Searchable extends Component {
   constructor(props) {
@@ -29,39 +30,62 @@ class Searchable extends Component {
       viewableEls: this.getViewableEls(elements, e.target.value)
     });
   };
+  toDetail = e => {};
 
   render() {
     const { viewableEls } = this.state;
     console.log(`viewableEls${this.state.viewableEls.length}`);
     return (
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          aria-label="Search"
-          aria-describedby="button-addon2"
-          value={this.state.filterStr}
-          onChange={this.handleFilterChange}
-        />
-        <div className="input-group-append">
-          <button
-            className="btn btn-outline-primary"
-            type="button"
-            id="button-addon2"
-          >
-            Search
-          </button>
+      <Container className="input-group mb-3">
+        <InputContainer>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="button-addon2"
+            value={this.state.filterStr}
+            onChange={this.handleFilterChange}
+          />
+        </InputContainer>
 
-          {/* <ul>
-            {viewableEls.map(e => (
-              <li key={e}>{e.name}</li>
-            ))}
-          </ul> */}
-        </div>
-      </div>
+        {this.state.filterStr && (
+          <ListContainer>
+            <ul className="list-group mb-4">
+              {viewableEls.map(e => (
+                <li key={e} className="list-group-item">
+                  <a onClick={this.toDetail} href="#">
+                    {e.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </ListContainer>
+        )}
+      </Container>
     );
   }
 }
 
 export default Searchable;
+
+export const Container = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const InputContainer = styled.div`
+  width: 80%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  margin-bottom: 12px;
+  justify-content: center;
+  align-items: center;
+`;
+export const ListContainer = styled.div`
+  padding: 12px 20px 12px 40px;
+  width: 80%;
+`;

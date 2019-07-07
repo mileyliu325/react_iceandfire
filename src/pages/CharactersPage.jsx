@@ -97,19 +97,15 @@ class CharactersTablePage extends Component {
         <br />
         <h1 className="text-center">Ice and fire characters</h1>
         <br />
-        
-        
-
+        <Searchable elements={this.state.characters} />
         {fetchedCharacters.length == 50 && (
           <div>
-          
           <Characters
             characters={currentCharacters}
             loading={this.state.isLoading}
           />
           </div>
         )}
-
         <Pagination
           charactersPerPage={this.state.charactersPerPage}
           totalCharacters={this.state.characters.length}

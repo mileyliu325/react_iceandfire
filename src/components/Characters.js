@@ -8,8 +8,6 @@ const Characters = ({ characters, loading }) => {
 
   return (
     <div className="center">
-      <Searchable elements={characters} />
-
       <table className="table table-bordered">
         <thead className="thead-dark">
           <tr>
