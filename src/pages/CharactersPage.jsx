@@ -19,8 +19,8 @@ class CharactersTablePage extends Component {
   constructor() {
     super();
     this.state = {
-      urls: [],//array of characters' api urls
-      characters: [],//arrary of character objects
+      urls: [], //array of characters' api urls
+      characters: [], //arrary of character objects
       currentPage: ACTIVE,
       charactersPerPage: PAGE_SIZE,
       isLoading: false
@@ -63,7 +63,7 @@ class CharactersTablePage extends Component {
     }
     this.setState({ isLoading: false });
   };
-  
+
   componentDidMount() {
     this.fetchBook();
   }
