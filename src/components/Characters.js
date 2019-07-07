@@ -20,7 +20,7 @@ const Characters = ({ characters, loading }) => {
           </tr>
         </thead>
         <tbody>
-          {characters.map((character, index) => (
+          {characters.map((character) => (
             <tr key={character.url}>
               <td>{character.name}</td>
               <td>{character.gender}</td>

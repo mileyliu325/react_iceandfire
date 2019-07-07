@@ -24,29 +24,25 @@ class DetailModal extends React.Component {
   }
 
   render() {
+    const { shown_name, character } = this.props;
     return (
       <section>
         {/* for searchable list, see Searchable.js */}
-        {this.props.shown_name && (
+        {shown_name && (
           <button
             type="button"
             className="btn btn-link"
             onClick={() => this.openModal()}
-          >
-            {this.props.shown_name}
+          > {shown_name}
           </button>
         )}
         {/* for character table , see Characters.js */}
-        {!this.props.shown_name && (
+        {!shown_name && (
           <button
             type="button"
             className="btn btn-info"
-            data-toggle="modal"
-            data-target="#exampleModal"
-            value="Open"
             onClick={() => this.openModal()}
-          >
-            More
+          > More
           </button>
         )}
         <Modal
@@ -57,8 +53,8 @@ class DetailModal extends React.Component {
           onClickAway={() => this.closeModal()}
         >
           <Container>
-            <h1>{this.props.character.name}</h1>
-            <Detail character={this.props.character} />
+            <h1>{character.name}</h1>
+            <Detail character={character} />
             <CloseContainer>
               <a href="javascript:void(0);" onClick={() => this.closeModal()}>
                 Close

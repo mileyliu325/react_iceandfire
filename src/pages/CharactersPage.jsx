@@ -26,6 +26,9 @@ class CharactersTablePage extends Component {
       isLoading: false
     };
   }
+  componentDidMount() {
+    this.fetchBook();
+  }
 
   fetchBook = async () => {
     this.setState({ isLoading: true });
@@ -44,32 +47,28 @@ class CharactersTablePage extends Component {
   };
 
   fetchCharaters = async () => {
-    if (this.state.urls) {
-      for (var i = 0; i < MAX_FETCH_COUNT; i++) {
-        const characterUrl = this.state.urls[i];
+    const { urls } = this.state;
+    if (urls) {
+      urls.slice(0,MAX_FETCH_COUNT).forEach(url => {
         axios
-          .get(`${CORS_FIX}${characterUrl}`)
-          .then(res => {
-            const character = res.data;
-            this.state.characters.push(character);
-            this.setState({
-              characters: this.state.characters
-            });
-          })
-          .catch(err => {
-            console.warn(err);
+        .get(`${CORS_FIX}${url}`)
+        .then(res => {
+          const character = res.data;
+          this.setState({
+            characters: [...this.state.characters,character]
           });
-      }
+        })
+        .catch(err => {
+          console.warn(err);
+        });
+      })
     }
     this.setState({ isLoading: false });
   };
 
-  componentDidMount() {
-    this.fetchBook();
-  }
   render() {
-    const fetchedCharacters = this.state.characters;
-
+    const {characters} = this.state;
+    
     // Get current character
     const indexOfLastCharacter =
       this.state.currentPage * this.state.charactersPerPage;
@@ -77,13 +76,15 @@ class CharactersTablePage extends Component {
     const indexOfFirstCharacter =
       indexOfLastCharacter - this.state.charactersPerPage;
 
-    const currentCharacters = fetchedCharacters.slice(
+    const currentCharacters = characters.slice(
       indexOfFirstCharacter,
       indexOfLastCharacter
     );
 
     // Change page
     const paginate = pageNumber => this.setState({ currentPage: pageNumber });
+    const pageCount = Math.ceil(characters.length / this.state.charactersPerPage);
+  
 
     return (
       <div>
@@ -91,7 +92,7 @@ class CharactersTablePage extends Component {
         <h1 className="text-center">Ice and fire characters</h1>
         <br />
         <Searchable elements={this.state.characters} />
-        {fetchedCharacters.length == MAX_FETCH_COUNT && (
+        {characters.length == MAX_FETCH_COUNT && (
           <div>
             <Characters
               characters={currentCharacters}
@@ -100,9 +101,8 @@ class CharactersTablePage extends Component {
           </div>
         )}
         <Pagination
-          charactersPerPage={this.state.charactersPerPage}
-          totalCharacters={this.state.characters.length}
           paginate={paginate}
+          pageCount ={pageCount}
         />
       </div>
     );

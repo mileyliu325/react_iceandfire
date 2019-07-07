@@ -5,7 +5,6 @@ class Searchable extends Component {
   constructor(props) {
     super();
     this.state = {
-      filteredElements: [],
       viewableEls: props.elements
     };
   }
@@ -33,12 +32,9 @@ class Searchable extends Component {
       viewableEls: this.getViewableEls(elements, e.target.value)
     });
   };
-  //todo to detail page
-  toDetail = e => {};
 
   render() {
-    const { viewableEls } = this.state;
-
+    const { viewableEls, filterStr } = this.state;
     return (
       <Container className="input-group mb-3">
         <InputContainer>
@@ -48,12 +44,12 @@ class Searchable extends Component {
             placeholder="Search"
             aria-label="Search"
             aria-describedby="button-addon2"
-            value={this.state.filterStr}
+            value={filterStr}
             onChange={this.handleFilterChange}
           />
         </InputContainer>
 
-        {this.state.filterStr && (
+        {filterStr && (
           <ListContainer>
             <ul className="list-group mb-4">
               {viewableEls.map(e => (

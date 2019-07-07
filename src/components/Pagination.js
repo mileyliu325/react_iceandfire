@@ -1,9 +1,9 @@
 import React from "react";
 
-const Pagination = ({ charactersPerPage, totalCharacters, paginate }) => {
+const Pagination = ({ paginate, pageCount }) => {
   const pageNumbers = [];
 
-  for (let i = 1; i <= Math.ceil(totalCharacters / charactersPerPage); i++) {
+  for (let i = 1; i <= pageCount; i++) {
     pageNumbers.push(i);
   }
 

@@ -4,7 +4,6 @@ const Detail = ({ character }) => {
 
   return (
     <div>
-
       <div className="card">
         <div className="card-body">
           Aliases:
