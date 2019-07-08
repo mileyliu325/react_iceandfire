@@ -4,7 +4,6 @@ import styled from "styled-components";
 import PropTypes from 'prop-types';
 
 import Detail from "./Detail";
-
 class DetailModal extends Component {
   constructor(props) {
     super(props);
@@ -58,9 +57,9 @@ class DetailModal extends Component {
             <h1>{character.name}</h1>
             <Detail character={character} />
             <CloseContainer>
-              <a href="javascript:void(0);" onClick={() => this.closeModal()}>
+              <button className="btn btn-info" onClick={() => this.closeModal()}>
                 Close
-              </a>
+              </button>
             </CloseContainer>
           </Container>
         </Modal>

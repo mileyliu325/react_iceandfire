@@ -96,7 +96,7 @@ class CharactersTablePage extends Component {
         {isLoading && (
           <ReactLoading type='spin' color='#0000FF' className="mx-auto"></ReactLoading>
         )}
-        {characters.length == MAX_FETCH_COUNT && (
+        {characters.length === MAX_FETCH_COUNT && (
           <div>
             <Characters
               characters={currentCharacters}
