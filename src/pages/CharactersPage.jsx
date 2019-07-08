@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ReactLoading from 'react-loading';
 
 import Characters from "../components/Characters";
 import Pagination from "../components/Pagination";
@@ -67,7 +68,7 @@ class CharactersTablePage extends Component {
   };
 
   render() {
-    const {characters} = this.state;
+    const {characters, isLoading} = this.state;
     
     // Get current character
     const indexOfLastCharacter =
@@ -92,6 +93,10 @@ class CharactersTablePage extends Component {
         <h1 className="text-center">Ice and fire characters</h1>
         <br />
         <Searchable elements={this.state.characters} />
+        
+        {isLoading && (
+          <ReactLoading type='spin' color='#0000FF' className="mx-auto"></ReactLoading>
+        )}
         {characters.length == MAX_FETCH_COUNT && (
           <div>
             <Characters
