@@ -34,7 +34,6 @@ class CharactersTablePage extends Component {
   }
 
   fetchBook = async () => {
-    
     axios
       .get(`${DEV_HOST}books/${BOOK_NUM}`)
       .then(res => {
@@ -42,17 +41,19 @@ class CharactersTablePage extends Component {
           .slice(0, MAX_FETCH_COUNT)
           .sort();
         this.setState({ urls: characterUrls });
-        this.fetchCharaters()
+        this.fetchCharaters();
+        
       })
       .catch(err => {
         console.warn(err);
-      });
+      })
+    
   };
 
   fetchCharaters = async () => {
     const { urls } = this.state;
     if (urls) {
-      urls.slice(0,MAX_FETCH_COUNT).forEach(url => {
+      Promise.all(urls.slice(0,MAX_FETCH_COUNT).map(url => {
         axios
         .get(`${CORS_FIX}${url}`)
         .then(res => {
@@ -65,9 +66,8 @@ class CharactersTablePage extends Component {
         .catch(err => {
           console.warn(err);
         });
-      })
+      })).then(this.setState({isLoading:false}));
     }
-    // 
   };
 
   render() {
