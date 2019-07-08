@@ -2,48 +2,17 @@ import React from "react";
 
 const Detail = ({ character }) => {
 
+  const characterKeys = Object.keys(character);
+
+  //Gender,culture,born,died,Title,aliase,tv, playby
+  const choosenkeys = [characterKeys[2], characterKeys[3], characterKeys[4], characterKeys[5], characterKeys[6], characterKeys[7], characterKeys[14], characterKeys[15]];
+
   return (
     <div>
-      <div className="card">
-        <div className="card-body">
-          Aliases:
-      {character.titles.length > 0 &&
-            character.aliases[0].length > 0 &&
-            character.aliases.map(aliase => <li key={aliase}>{aliase}</li>)}
-        </div>
-      </div>
-      <br />
-
-      <div className="card">
-        <div className="card-body">
-          Titles:
-      {character.titles.length > 0 &&
-            character.titles[0].length > 0 &&
-            character.titles.map(title => <li key={title}>{title}</li>)}
-        </div>
-      </div>
-      <br />
-
-      <div className="card">
-        <div className="card-body">
-          PlayedBy:
-      {character.playedBy.length > 0 &&
-            character.playedBy[0].length > 0 &&
-            character.playedBy.map(playedby => <li key={playedby}>{playedby}</li>)}
-        </div>
-      </div>
-      <br />
-
-      <div className="card">
-        <div className="card-body">
-          TV Series:
-      {character.tvSeries.length > 0 &&
-            character.tvSeries[0].length > 0 &&
-            character.tvSeries.map(tvSerie => <li key={tvSerie}>{tvSerie}</li>)}
-        </div>
-      </div>
-      <br />
-
+      <hr />
+      {choosenkeys && choosenkeys.map(key =>
+        <p>{`${key.toUpperCase()} : ${character[key]}`}</p>
+      )}
     </div>
   );
 };
