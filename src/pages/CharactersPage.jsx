@@ -16,10 +16,7 @@ const PAGE_SIZE = 10;
 const ACTIVE = 1;
 
 const pageCount = Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE);
-const pageNumbers = [];
-  for (let i = 1; i <= pageCount; i++) {
-    pageNumbers.push(i);
-  }
+
 
 
 class CharactersTablePage extends Component {
@@ -107,7 +104,7 @@ class CharactersTablePage extends Component {
         </div>
         <Pagination
           paginate={paginate}
-          pageNumbers={pageNumbers}
+          pageCount={pageCount}
           isLoading={isLoading}
         />
       </div>
