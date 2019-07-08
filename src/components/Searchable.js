@@ -22,7 +22,7 @@ class Searchable extends Component {
 
   getViewableEls(elements, filterStr) {
     //todo: ignore case sensative
-    return elements.filter(el => JSON.stringify(el).includes(filterStr));
+    return elements.filter(el => JSON.stringify(Object.values(el)).includes(filterStr));
   }
   handleFilterChange = e => {
     const { elements } = this.props;
@@ -35,6 +35,7 @@ class Searchable extends Component {
 
   render() {
     const { viewableEls, filterStr } = this.state;
+    console.log("viewable" + viewableEls.length);
     return (
       <Container className="input-group mb-3">
         <InputContainer>
@@ -53,7 +54,7 @@ class Searchable extends Component {
           <ListContainer>
             <ul className="list-group mb-4">
               {viewableEls.map(e => (
-                <li key={e} className="list-group-item">
+                <li key={e.url} className="list-group-item">
                   <DetailModal
                     character={e}
                     shown_name={`${e.name} ( ${e.gender} )`}
