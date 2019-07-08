@@ -10,8 +10,8 @@ const Detail = ({ character }) => {
   return (
     <div>
       <hr />
-      {choosenkeys && choosenkeys.map(key =>
-        <p>{`${key.toUpperCase()} : ${character[key]}`}</p>
+      {choosenkeys && choosenkeys.map((key, index) =>
+        <p key={index}>{`${key.toUpperCase()} : ${character[key]}`}</p>
       )}
     </div>
   );

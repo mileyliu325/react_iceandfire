@@ -1,9 +1,10 @@
 import React from "react";
 import DetailModal from "./DetailModal";
+import ReactLoading from 'react-loading';
 
 const Characters = ({ characters, loading }) => {
   if (loading) {
-    return <h2>Loading...</h2>;
+    return <ReactLoading type='spin' color='#0000FF' className="mx-auto"></ReactLoading>;
   }
 
   return (

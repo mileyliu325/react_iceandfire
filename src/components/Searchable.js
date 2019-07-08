@@ -36,7 +36,6 @@ class Searchable extends Component {
 
   render() {
     const { viewableEls, filterStr } = this.state;
-    console.log("viewable" + viewableEls.length);
     return (
       <Container className="input-group mb-3">
         <InputContainer>

@@ -85,8 +85,7 @@ class CharactersTablePage extends Component {
     // Change page
     const paginate = pageNumber => this.setState({ currentPage: pageNumber });
     const pageCount = Math.ceil(characters.length / this.state.charactersPerPage);
-  
-
+    
     return (
       <div>
         <br />
@@ -108,6 +107,7 @@ class CharactersTablePage extends Component {
         <Pagination
           paginate={paginate}
           pageCount ={pageCount}
+          isLoading= {isLoading}
         />
       </div>
     );
