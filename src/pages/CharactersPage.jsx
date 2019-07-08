@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import ReactLoading from 'react-loading';
 
 import Characters from "../components/Characters";
 import Pagination from "../components/Pagination";
@@ -12,9 +11,16 @@ const CORS_FIX = "https://cors-anywhere.herokuapp.com/";
 const HOST = "https://anapioficeandfire.com/api/";
 const DEV_HOST = CORS_FIX + HOST;
 const BOOK_NUM = 1;
-const MAX_FETCH_COUNT = 50;
+const MAX_FETCH_COUNT = 45;
 const PAGE_SIZE = 10;
 const ACTIVE = 1;
+
+const pageCount = Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE);
+const pageNumbers = [];
+  for (let i = 1; i <= pageCount; i++) {
+    pageNumbers.push(i);
+  }
+
 
 class CharactersTablePage extends Component {
   constructor() {
@@ -30,7 +36,6 @@ class CharactersTablePage extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     this.fetchBook();
-  
   }
 
   fetchBook = async () => {
@@ -42,37 +47,37 @@ class CharactersTablePage extends Component {
           .sort();
         this.setState({ urls: characterUrls });
         this.fetchCharaters();
-        
       })
       .catch(err => {
         console.warn(err);
-      })
-    
+      });
   };
 
   fetchCharaters = async () => {
     const { urls } = this.state;
     if (urls) {
-      Promise.all(urls.slice(0,MAX_FETCH_COUNT).map(url => {
-        axios
-        .get(`${CORS_FIX}${url}`)
-        .then(res => {
-          const character = res.data;
-          this.setState({
-            characters: [...this.state.characters,character]
-          });
+      Promise.all(
+        urls.slice(0, MAX_FETCH_COUNT).map(url => {
+          axios
+            .get(`${CORS_FIX}${url}`)
+            .then(res => {
+              const character = res.data;
+              this.setState({
+                characters: [...this.state.characters, character]
+              });
+            })
+            .then(this.setState({ isLoading: false }))
+            .catch(err => {
+              console.warn(err);
+            });
         })
-        .then(this.setState({ isLoading: false }))
-        .catch(err => {
-          console.warn(err);
-        });
-      })).then(this.setState({isLoading:false}));
+      ).then(this.setState({ isLoading: false }));
     }
   };
 
   render() {
-    const {characters, isLoading} = this.state;
-    
+    const { characters, isLoading } = this.state;
+
     // Get current character
     const indexOfLastCharacter =
       this.state.currentPage * this.state.charactersPerPage;
@@ -87,7 +92,6 @@ class CharactersTablePage extends Component {
 
     // Change page
     const paginate = pageNumber => this.setState({ currentPage: pageNumber });
-    const pageCount = Math.ceil(characters.length / this.state.charactersPerPage);
     
     return (
       <div>
@@ -95,22 +99,16 @@ class CharactersTablePage extends Component {
         <h1 className="text-center">Ice and fire characters</h1>
         <br />
         <Searchable elements={this.state.characters} />
-        
-        {isLoading && (
-          <ReactLoading type='spin' color='#0000FF' className="mx-auto"></ReactLoading>
-        )}
-        {characters.length === MAX_FETCH_COUNT && (
-          <div>
-            <Characters
-              characters={currentCharacters}
-              loading={this.state.isLoading}
-            />
-          </div>
-        )}
+        <div>
+          <Characters
+            characters={currentCharacters}
+            loading={this.state.isLoading}
+          />
+        </div>
         <Pagination
           paginate={paginate}
-          pageCount ={pageCount}
-          isLoading= {isLoading}
+          pageNumbers={pageNumbers}
+          isLoading={isLoading}
         />
       </div>
     );
