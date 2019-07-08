@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import DetailModal from "./DetailModal";
+import PropTypes from 'prop-types';
 class Searchable extends Component {
   constructor(props) {
     super();
@@ -91,3 +92,7 @@ export const ListContainer = styled.div`
   padding: 12px 20px 12px 40px;
   width: 80%;
 `;
+
+Searchable.protoTypes = {
+  elements: PropTypes.array
+}

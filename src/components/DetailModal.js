@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import Modal from "react-awesome-modal";
-import Detail from "./Detail";
 import styled from "styled-components";
+import PropTypes from 'prop-types';
 
-class DetailModal extends React.Component {
+import Detail from "./Detail";
+
+class DetailModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,6 +67,11 @@ class DetailModal extends React.Component {
       </section>
     );
   }
+}
+
+DetailModal.protoTypes = {
+  shown_name: PropTypes.string,
+  character: PropTypes.object
 }
 
 export default DetailModal;
