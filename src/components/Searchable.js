@@ -6,10 +6,11 @@ class Searchable extends Component {
   constructor(props) {
     super();
     this.state = {
-      viewableEls: props.elements
+      viewableEls: props.elements,
+      filterStr: ''
+
     };
   }
-
   componentWillReceiveProps(nextProps) {
     const { elements } = this.props;
     const { filterStr } = this.state;
@@ -43,8 +44,8 @@ class Searchable extends Component {
             type="text"
             className="form-control"
             placeholder="Search"
-            aria-label="Search"
-            aria-describedby="button-addon2"
+            // aria-label="Search"
+            // aria-describedby="button-addon2"
             value={filterStr}
             onChange={this.handleFilterChange}
           />

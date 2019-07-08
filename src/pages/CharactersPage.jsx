@@ -28,11 +28,13 @@ class CharactersTablePage extends Component {
     };
   }
   componentDidMount() {
+    this.setState({ isLoading: true });
     this.fetchBook();
+  
   }
 
   fetchBook = async () => {
-    this.setState({ isLoading: true });
+    
     axios
       .get(`${DEV_HOST}books/${BOOK_NUM}`)
       .then(res => {
@@ -40,7 +42,7 @@ class CharactersTablePage extends Component {
           .slice(0, MAX_FETCH_COUNT)
           .sort();
         this.setState({ urls: characterUrls });
-        this.fetchCharaters();
+        this.fetchCharaters()
       })
       .catch(err => {
         console.warn(err);
@@ -59,12 +61,13 @@ class CharactersTablePage extends Component {
             characters: [...this.state.characters,character]
           });
         })
+        .then(this.setState({ isLoading: false }))
         .catch(err => {
           console.warn(err);
         });
       })
     }
-    this.setState({ isLoading: false });
+    // 
   };
 
   render() {
