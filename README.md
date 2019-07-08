@@ -14,6 +14,8 @@ Searchable is implemented by array 's filter function and inclues function, and 
 2. react-awesome-modal -> simple popup modal
 3. styled-componets -> code css in js file
 4. boostrap -> style
+5. props-type -> props type checking
+6. react-loading -> loading UI
 
 ## Todo
 
