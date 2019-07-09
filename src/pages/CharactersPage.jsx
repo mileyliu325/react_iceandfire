@@ -11,14 +11,11 @@ const CORS_FIX = "https://cors-anywhere.herokuapp.com/";
 const HOST = "https://anapioficeandfire.com/api/";
 const DEV_HOST = CORS_FIX + HOST;
 const BOOK_NUM = 1;
-const MAX_FETCH_COUNT = 45;
+const MAX_FETCH_COUNT = 50;
 const PAGE_SIZE = 10;
 const ACTIVE = 1;
 
 const pageCount = Math.ceil(MAX_FETCH_COUNT / PAGE_SIZE);
-
-
-
 class CharactersTablePage extends Component {
   constructor() {
     super();
@@ -52,29 +49,19 @@ class CharactersTablePage extends Component {
 
   fetchCharaters = async () => {
     const { urls } = this.state;
+    const calls = urls.slice(0,MAX_FETCH_COUNT);
+    
     if (urls) {
-      Promise.all(
-        urls.slice(0, MAX_FETCH_COUNT).map(url => {
-          axios
-            .get(`${CORS_FIX}${url}`)
-            .then(res => {
-              const character = res.data;
-              this.setState({
-                characters: [...this.state.characters, character]
-              });
-            })
-            .then(this.setState({ isLoading: false }))
-            .catch(err => {
-              console.warn(err);
-            });
-        })
-      ).then(this.setState({ isLoading: false }));
+      const resultArray = await Promise.all(calls.map(url=>axios.get(`${CORS_FIX}${url}`))).then(this.setState({isLoading:false}))
+      const processedArray = resultArray.map(res=>res.data);
+      this.setState({characters:processedArray});
     }
   };
 
   render() {
+    console.log("render");
     const { characters, isLoading } = this.state;
-
+   
     // Get current character
     const indexOfLastCharacter =
       this.state.currentPage * this.state.charactersPerPage;
@@ -89,7 +76,7 @@ class CharactersTablePage extends Component {
 
     // Change page
     const paginate = pageNumber => this.setState({ currentPage: pageNumber });
-    
+
     return (
       <div>
         <br />
