@@ -32,36 +32,41 @@ class CharactersTablePage extends Component {
     this.fetchBook();
   }
 
-  fetchBook = async () => {
+  fetchBook = () => {
     axios
       .get(`${DEV_HOST}books/${BOOK_NUM}`)
-      .then(res => {
-        const characterUrls = res.data.characters
+      //get urls
+      .then(
+        res => res.data.characters
           .slice(0, MAX_FETCH_COUNT)
-          .sort();
-        this.setState({ urls: characterUrls });
-        this.fetchCharaters();
+          .sort()
+      )
+      //map url to data
+      .then(urls => urls
+        .map(
+          url =>
+            axios
+              .get(`${CORS_FIX}${url}`)
+              .then(res => res.data))
+      )
+      //collect data
+      .then(resultPromises => Promise.all(resultPromises))
+      //set state
+      .then(resultArray => {
+        this.setState({
+          isLoading: false,
+          characters: resultArray
+        })
       })
       .catch(err => {
         console.warn(err);
       });
   };
 
-  fetchCharaters = async () => {
-    const { urls } = this.state;
-    const calls = urls.slice(0,MAX_FETCH_COUNT);
-    
-    if (urls) {
-      const resultArray = await Promise.all(calls.map(url=>axios.get(`${CORS_FIX}${url}`))).then(this.setState({isLoading:false}))
-      const processedArray = resultArray.map(res=>res.data);
-      this.setState({characters:processedArray});
-    }
-  };
-
   render() {
     console.log("render");
     const { characters, isLoading } = this.state;
-   
+
     // Get current character
     const indexOfLastCharacter =
       this.state.currentPage * this.state.charactersPerPage;
